@@ -5,11 +5,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Setter @Getter
+@NoArgsConstructor
+//genera un constructor vacio requisito obligatorio por jpa
+@AllArgsConstructor
+//genera un constructor con todos los parametros
 public class Direccion {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -27,12 +33,5 @@ public class Direccion {
      @ManyToOne
     private Cliente cliente;
     
-     public Direccion(String calle, String numero, String ciudad, String provincia, String cp, Cliente cliente) {
-        this.calle = calle;
-        this.numero = numero;
-        this.ciudad = ciudad;
-        this.provincia = provincia;
-        this.cp = cp;
-        this.cliente = cliente;
-    }
+   
 }
