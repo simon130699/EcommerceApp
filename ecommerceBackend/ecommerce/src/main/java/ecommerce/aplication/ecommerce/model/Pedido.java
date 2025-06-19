@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +30,7 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idPedido;
-
+    @Column (unique = true)
     private String numeroPedido;
     private LocalDateTime fechaPedido;
     private BigDecimal total;
@@ -53,6 +54,7 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemPedido> items = new ArrayList<>();
 
+    
 }
 
 
