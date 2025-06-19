@@ -65,9 +65,12 @@ private Boolean isActive;
     public BigDecimal calcularTotalCompras() {
         return pedidos.stream()
                 .map(Pedido::getTotal)
+                // toma cada pedido y obtiene su total (importe total de ese pedido).
                 .filter(total -> total != null)
+                //suma todos los valores del stream (totales de pedidos) comenzando desde cero.
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
 
     // Activa el cliente
     public void activar() {
