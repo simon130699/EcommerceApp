@@ -2,6 +2,8 @@ package ecommerce.aplication.ecommerce.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,27 +43,17 @@ public class Pedido {
     @OneToOne(cascade = CascadeType.ALL)
     private Direccion direccionEnvio;
 
-    //@ManyToOne
-    //@JoinColumn(name = "metodo_pago_id")
-    //private MetodoPago metodoDePago;
+    @ManyToOne
+    @JoinColumn(name = "metodo_pago_id")
+    private MetodoPago metodoDePago;
 
-    //@OneToOne(cascade = CascadeType.ALL)
-    //private Factura factura;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Factura factura;
 
-    //@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<ItemPedido> items = new ArrayList<>();
-
-    public Pedido(String numeroPedido, LocalDateTime fechaPedido, BigDecimal total, String estadoPendiente,
-                  String observaciones, Cliente cliente, Direccion direccionEnvio, MetodoPago metodoDePago) {
-        this.numeroPedido = numeroPedido;
-        this.fechaPedido = fechaPedido;
-        this.total = total;
-        this.estadoPendiente = estadoPendiente;
-        this.observaciones = observaciones;
-        this.cliente = cliente;
-        this.direccionEnvio = direccionEnvio;
-        //this.metodoDePago = metodoDePago;
-    }
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemPedido> items = new ArrayList<>();
 
 }
+
+
 

@@ -1,5 +1,6 @@
 package ecommerce.aplication.ecommerce.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +10,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Setter @Getter
+@NoArgsConstructor
+//genera un constructor vacio requisito obligatorio por jpa
+@AllArgsConstructor
+//genera un constructor con todos los parametros
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -33,21 +40,42 @@ private Boolean isActive;
     @OneToMany
     private List<Pedido> pedidos = new ArrayList<>();
 
-      public Cliente(Long id, String nombre, String surnombre, String dni, String tel,
-                   LocalDate fechaDeNacimiento, LocalDate fechaDeRegristro, Boolean isActive,
-                   List<Direccion> direcciones, List<Pedido> pedidos) {
-        this.id = id;
-        this.nombre = nombre;
-        this.nombre = surnombre;
-        this.dni = dni;
-        this.tel = tel;
-        this.fechaDeNacimiento = fechaDeNacimiento;
-        this.fechaDeRegristro = fechaDeRegristro;
-        this.isActive = isActive;
-        this.direcciones = direcciones != null ? direcciones : new ArrayList<>();
-        this.pedidos = pedidos != null ? pedidos : new ArrayList<>();
+     // Devuelve el nombre completo 
+    public String getNombreCompleto() {
+        return nombre + " " + apellido;
     }
 
-    public Cliente() {
+    // Agrega una dirección a la lista de direcciones
+    public void agregarDireccion(Direccion direccion) {
+        if (direccion != null) {
+
+            this.direcciones.add(direccion);
+        }
+    }
+
+    // Devuelve la dirección principal
+    public Direccion getDireccionPrincipal() {
+        if (direcciones.isEmpty()) {
+            return null;
+        }
+        return direcciones.get(0);
+    }
+
+    // Suma el total de todos los pedidos asociados al cliente
+    public BigDecimal calcularTotalCompras() {
+        return pedidos.stream()
+                .map(Pedido::getTotal)
+                .filter(total -> total != null)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    // Activa el cliente
+    public void activar() {
+        this.isActive = true;
+    }
+
+    // Desactiva el cliente
+    public void desactivar() {
+        this.isActive = false;
     }
 }
